@@ -28,48 +28,44 @@ import java.util.regex.Pattern;
  */
 public class Util {
 
-    public static Product getProduct(String s){
+    public static Product getProduct(String s) {
         return getProduct(getXMLPath(s));
     }
 
-    public static Product getProduct(File file){
+    public static Product getProduct(File file) {
         return getProduct(getXMLPath(file));
     }
 
-    public static XmlPath getXMLPath(String s){
+    public static XmlPath getXMLPath(String s) {
         return new XmlPath(s).setRoot("PRODUCT");
     }
 
-    public static XmlPath getXMLPath(File file){
+    public static XmlPath getXMLPath(File file) {
         return new XmlPath(file).setRoot("PRODUCT");
     }
 
-    public static String getFirstFreeId(String s){
+    public static String getFirstFreeId(String s) {
         return getFirstId(s, false);
     }
 
-    public static String getFirstBusyId(String s){
+    public static String getFirstBusyId(String s) {
         return getFirstId(s, true);
     }
 
-    private static String getFirstId(String s, boolean isBusy){
+    private static String getFirstId(String s, boolean isBusy) {
         XmlPath path = new XmlPath(s);
         String rawNumbers = null;
-        try {
-            rawNumbers = String.valueOf(path.getNode("PRODUCTList").get("PRODUCT"));
-        } catch (Exception e) {
-            System.out.println(s);
-        }
+        rawNumbers = String.valueOf(path.getNode("PRODUCTList").get("PRODUCT"));
 
         Pattern pattern = Pattern.compile("(\\d+)"); //pattern to retieve numbers from String
         Matcher matcher = pattern.matcher(rawNumbers);
 
         int i = 0;
-        while (matcher.find()){
+        while (matcher.find()) {
             if (isBusy) {
                 return matcher.group(0);
             }
-            if (i != Integer.valueOf(matcher.group(0))){
+            if (i != Integer.valueOf(matcher.group(0))) {
                 break;
             }
             i++;
@@ -77,7 +73,7 @@ public class Util {
         return String.valueOf(i);
     }
 
-    public static List<String> getBusyIDs(String s){
+    public static List<String> getBusyIDs(String s) {
         XmlPath path = new XmlPath(s);
         List<String> busyIDs = new ArrayList<String>();
         String rawNumbers = String.valueOf(path.getNode("PRODUCTList").get("PRODUCT"));
@@ -85,21 +81,20 @@ public class Util {
         Pattern pattern = Pattern.compile("(\\d+)"); //pattern to retieve numbers from String
         Matcher matcher = pattern.matcher(rawNumbers);
 
-        while (matcher.find()){
+        while (matcher.find()) {
             busyIDs.add(matcher.group(0));
         }
 
         return busyIDs;
     }
 
-    private static Product getProduct(XmlPath path){
+    private static Product getProduct(XmlPath path) {
         Product product = new Product();
         product.setName(String.valueOf(path.get("NAME")));
         product.setPrice(String.valueOf(path.get("PRICE")));
         product.setID(String.valueOf(path.get("ID")));
         return product;
     }
-
 
 
 }
