@@ -53,7 +53,7 @@ public class Test {
     public void deleteCreated(){
         while (!createdIds.isEmpty()){
             delete(productPath + createdIds.poll());
-        }
+        } // cleanup
     }
 
     @BeforeMethod
@@ -179,7 +179,7 @@ public class Test {
 
 
     @org.testng.annotations.Test
-    public void UpdateRecordWithStringID() {
+    public void UpdateRecordNonValidID() {
         String wrongId = getProduct(nonValidID).getID();
         given().body(nonValidID)
                 .when()
